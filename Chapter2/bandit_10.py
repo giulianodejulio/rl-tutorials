@@ -27,7 +27,7 @@ def plot():
     colors = plt.cm.get_cmap("tab10", arms)
 
     for i in range(arms):
-        plt.plot(Q_a_error_history[:, i], label=f"Error[{i}]", color=colors(i))
+        plt.plot(Q_a_error_history[:, i], label=f"Error[{i+1}]", color=colors(i))
 
     plt.xlabel("Time Steps")
     plt.ylabel("Absolute Error |Q_a - q*|")
@@ -97,4 +97,5 @@ for t in range(numIter):
 average_rewards = np.cumsum(rewards) / (np.arange(numIter) + 1)
 optimal_action_percentage = np.cumsum(optimal_action_counts) / (np.arange(numIter) + 1) * 100
 
+print(f"The best action in the environment is {env.optimal_action + 1}")
 plot()
