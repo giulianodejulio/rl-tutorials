@@ -74,8 +74,8 @@ class EpsilonGreedyAgent:
         self.Q_a[action_idx] = 1/self.action_counters[action_idx] * self.cumulative_rewards[action_idx]
 
     def update_estimate_2(self, reward, action_idx, iter): # Eq. 2.3
-        n = iter + 1 # first iteration has index 0. We need 1 at the denominator, hence the + 1
-        self.Q_a[action_idx] = self.Q_a[action_idx] + 1/n * (reward - self.Q_a[action_idx])
+        # first iteration has index 0. We need 1 at the denominator, hence the iter + 1
+        self.Q_a[action_idx] = self.Q_a[action_idx] + 1/(iter+1) * (reward - self.Q_a[action_idx])
 
 arms  = 10
 env   = BanditEnvironment(arms)
