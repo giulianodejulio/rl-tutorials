@@ -33,9 +33,8 @@ def plot():
     plt.ylabel("Absolute Error |Q_a - q*|")
     plt.title("Convergence of Action-Value Estimates (Error over Time)")
     plt.legend()
-
-
     plt.show()
+
 
 class BanditEnvironment:
     def __init__(self, arms=10):
@@ -50,7 +49,7 @@ class EpsilonGreedyAgent:
         self.Q_a = np.zeros(shape=(arms,))                 # action-value estimates
         self.action_counters = np.zeros(shape=(arms,))     # for each action, the number of times that the action was chosen 
         self.cumulative_rewards = np.zeros(shape=(arms,))  # numerator of Eq. 2.1
-        self.epsilon = 0.1
+        self.epsilon = 0.01
 
     def greedy_action(self):
         return np.argmax(self.Q_a)
