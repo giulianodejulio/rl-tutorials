@@ -39,14 +39,14 @@ def plot():
 class BanditEnvironment:
     def __init__(self, arms=10):
         self.q_star = np.random.normal(loc=0, scale=1, size=arms) # mean, variance, shape of q_star
-        self.optimal_action = np.argmax(self.q_star)  # Best action
+        self.optimal_action = np.argmax(self.q_star)              # Best action
 
     def get_reward(self, action_idx):
         return np.random.normal(loc=self.q_star[action_idx], scale=1) # we get one reward for choosing the action indexed by action_idx
 
 class EpsilonGreedyAgent:
     def __init__(self, arms=10):
-        self.Q_a = np.zeros(shape=(arms,))                 # action-value estimates
+        self.Q_a = np.zeros(shape=(arms,))                 # action-value estimate
         self.action_counters = np.zeros(shape=(arms,))     # for each action, the number of times that the action was chosen 
         self.cumulative_rewards = np.zeros(shape=(arms,))  # numerator of Eq. 2.1
         self.epsilon = 0.01
@@ -73,6 +73,10 @@ class EpsilonGreedyAgent:
         self.cumulative_rewards[action_idx] = self.cumulative_rewards[action_idx] + reward
         self.Q_a[action_idx] = 1/self.action_counters[action_idx] * self.cumulative_rewards[action_idx]
 
+    def update_estimate_2(self, reward, action_idx, iter): # Eq. 2.3
+        n = iter + 1 # first iteration has index 0. We need 1 at the denominator, hence the + 1
+        self.Q_a[action_idx] = self.Q_a[action_idx] + 1/n * (reward - self.Q_a[action_idx])
+
 arms  = 10
 env   = BanditEnvironment(arms)
 agent = EpsilonGreedyAgent(arms)
@@ -85,7 +89,8 @@ Q_a_error_history = np.zeros((numIter, arms))
 for t in range(numIter):
     action_idx = agent.epsilon_greedy_action()
     reward = env.get_reward(action_idx)
-    agent.update_estimate(reward, action_idx)
+    # agent.update_estimate(reward, action_idx)
+    agent.update_estimate_2(reward, action_idx, t)
 
     rewards.append(reward) # Store rewards for tracking average performance
     optimal_action_counts.append(action_idx == env.optimal_action) # number of times the optimal action in env.q_star was chosen
