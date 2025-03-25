@@ -38,7 +38,7 @@ def plot():
 
 class BanditEnvironment:
     def __init__(self, arms=10):
-        self.q_star = np.random.normal(loc=0, scale=1, size=arms) # mean, variance, shape of q_star
+        self.q_star = np.random.normal(loc=0, scale=1, size=arms) # mean, std dev, shape of q_star
         self.optimal_action = np.argmax(self.q_star)              # Best action
 
     def get_reward(self, action_idx):
@@ -49,7 +49,7 @@ class EpsilonGreedyAgent:
         self.Q_a = np.zeros(shape=(arms,))                 # action-value estimate
         self.action_counters = np.zeros(shape=(arms,))     # for each action, the number of times that the action was chosen 
         self.cumulative_rewards = np.zeros(shape=(arms,))  # numerator of Eq. 2.1
-        self.epsilon = 0.01
+        self.epsilon = 0.1
 
     def greedy_action(self):
         return np.argmax(self.Q_a)
@@ -59,7 +59,7 @@ class EpsilonGreedyAgent:
         Choose the greedy (i.e., the best) action with probability 1 - self.epsilon. For that,
         we need a Bernoulli random variable, with parameter self.epsilon, which is a special
         case of the Binomial random variable, with a number of trials equal to 1. p = prob(1).
-        0 => choose greedy_action, 1 => choose epsilon_greedy_action
+        0 => choose greedy action, 1 => choose random action
         '''
         if np.random.binomial(n=1, p=self.epsilon):
             random_action_idx = np.random.choice(len(self.Q_a))
@@ -69,12 +69,12 @@ class EpsilonGreedyAgent:
     
     def update_estimate(self, reward, action_idx):
         # update the entry of Q_a indexed by action_idx
-        self.action_counters[action_idx] = self.action_counters[action_idx] + 1
-        self.cumulative_rewards[action_idx] = self.cumulative_rewards[action_idx] + reward
+        self.action_counters[action_idx] += 1
+        self.cumulative_rewards[action_idx] += reward
         self.Q_a[action_idx] = 1/self.action_counters[action_idx] * self.cumulative_rewards[action_idx]
 
     def update_estimate_2(self, reward, action_idx, iter): # Eq. 2.3
-        # first iteration has index 0. We need 1 at the denominator, hence the iter + 1
+        # first iteration has index 0. We need 1 at the denominator, hence iter + 1
         self.Q_a[action_idx] = self.Q_a[action_idx] + 1/(iter+1) * (reward - self.Q_a[action_idx])
         # self.Q_a[action_idx] = self.Q_a[action_idx] + 1/0.9 * (reward - self.Q_a[action_idx])
 
@@ -82,16 +82,16 @@ arms  = 10
 env   = BanditEnvironment(arms)
 agent = EpsilonGreedyAgent(arms)
 
-numIter = 1000
+num_iter = 1000
 rewards = []
 optimal_action_counts = []
-Q_a_error_history = np.zeros((numIter, arms))
+Q_a_error_history = np.zeros((num_iter, arms))
 
-for t in range(numIter):
+for t in range(num_iter):
     action_idx = agent.epsilon_greedy_action()
     reward = env.get_reward(action_idx)
-    # agent.update_estimate(reward, action_idx)
-    agent.update_estimate_2(reward, action_idx, t)
+    agent.update_estimate(reward, action_idx)
+    # agent.update_estimate_2(reward, action_idx, t)
 
     rewards.append(reward) # Store rewards for tracking average performance
     optimal_action_counts.append(action_idx == env.optimal_action) # number of times the optimal action in env.q_star was chosen
@@ -99,8 +99,8 @@ for t in range(numIter):
 
 
 # Filtering: Compute average rewards and optimal action percentage (for smooth plots)
-average_rewards = np.cumsum(rewards) / (np.arange(numIter) + 1)
-optimal_action_percentage = np.cumsum(optimal_action_counts) / (np.arange(numIter) + 1) * 100
+average_rewards = np.cumsum(rewards) / (np.arange(num_iter) + 1)
+optimal_action_percentage = np.cumsum(optimal_action_counts) / (np.arange(num_iter) + 1) * 100
 
 print(f"The best action in the environment is {env.optimal_action + 1}")
 plot()
