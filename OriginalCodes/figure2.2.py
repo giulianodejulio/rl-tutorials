@@ -9,6 +9,32 @@ action_counters = np.zeros(arms)        # Number of times each action was chosen
 Q_a = np.zeros(arms)                    # Action-value estimates
 randomness = np.random.RandomState(42)  # Fixed seed
 
+def plot():
+    # Plot Average Rewards
+    plt.figure(figsize=(10, 6))
+    plt.plot(average_reward, label='ε = 0.1')
+    plt.plot(average_reward_1, label='ε = 0.01')
+    plt.plot(average_reward_2, label='ε = 0.0')
+    plt.xlabel('Time Step')
+    plt.ylabel('Average Reward')
+    plt.title('Average Reward Over Time')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Plot Optimal Action Percentage
+    plt.figure(figsize=(10, 6))
+    plt.plot(av_oap * 100, label='ε = 0.1')  # Convert to percentage
+    plt.plot(av_oap_1 * 100, label='ε = 0.01')
+    plt.plot(av_oap_2 * 100, label='ε = 0.0')
+    plt.xlabel('Time Step')
+    plt.ylabel('Optimal Action Percentage (%)')
+    plt.title('Optimal Action Percentage Over Time')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
 def setup(seed=42):
     '''Initializes the true action-value function and sets the seed for reproducibility'''
     global Q_a, action_counters, q_star, randomness
@@ -61,14 +87,8 @@ def runs(num_runs=num_runs, num_iter=num_iter, epsilon=0):
 
 setup()
 average_reward, av_oap = runs(num_runs=num_runs, num_iter=num_iter, epsilon=0.1)
+average_reward_1, av_oap_1 = runs(num_runs=num_runs, num_iter=num_iter, epsilon=0.01)
+average_reward_2, av_oap_2 = runs(num_runs=num_runs, num_iter=num_iter, epsilon=0.0)
 
 # Plot the results
-plt.figure(figsize=(10, 6))
-plt.plot(average_reward, label='Average Reward')
-plt.plot(av_oap, label='Average Optimal Action Percentage (AV-OAP)')
-plt.xlabel('Time Step')
-plt.ylabel('Value')
-plt.title('Average Reward and Optimal Action Percentage')
-plt.legend()
-plt.grid(True)
-plt.show()
+plot()
