@@ -54,7 +54,7 @@ n_iter = 0
 
 while True:  # Loop until convergence
     delta = 0  # Track changes for convergence
-    new_value_function = np.copy(env.value_function)  # Copy to avoid overwriting
+    new_value_function = np.copy(env.value_function)  # We copy because of Python's Reference-Based Assignment
 
     for row in range(n_rows):
         for col in range(n_cols):
