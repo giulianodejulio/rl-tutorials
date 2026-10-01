@@ -1,11 +1,12 @@
+from output_paths import figure_path
 import random
 
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
-from linear_value_prediction import GridworldEnvironment
-from quadratic_value_prediction import evaluate_random_policy_with_dp
+from experiments.function_approximation.linear_value_prediction import GridworldEnvironment
+from experiments.function_approximation.quadratic_value_prediction import evaluate_random_policy_with_dp
 
 
 def random_state():
@@ -91,7 +92,7 @@ def plot_surface_and_points(surface_values, point_values, title, output_path):
     ax.view_init(elev=25, azim=-135)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=160)
+    fig.savefig(figure_path('function_approximation', output_path), dpi=160)
     plt.close(fig)
 
 

@@ -1,15 +1,66 @@
-from pathlib import Path
-
+from output_paths import figure_path, data_path
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
-from reinforce_continuous_policy import collect_rollout
-from reinforce_batch_gradient import rollout_gradient
-from reinforce_training import evaluate_policy
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
+from experiments.policy_gradient.reinforce_continuous_policy import collect_rollout
+from experiments.policy_gradient.reinforce_batch_gradient import rollout_gradient
+from experiments.policy_gradient.reinforce_training import evaluate_policy
+
+
+def plot_policy_evolution(weight_history, sigma, target):
+    # Fixed probes isolate weight changes from changes in visited states.
+    states = [(0.0, 0.0), (2.0, target), (2.0, target + 0.4)]
+    last_update = len(weight_history) - 1
+    checkpoints = sorted({0, last_update // 2, last_update})
+    colors = ["tab:blue", "tab:orange", "tab:green"]
+    styles = ["--", "-.", "-"]
+    features = np.array([[1.0, p, v, target] for p, v in states])
+    means = weight_history @ features.T
+    actions = np.linspace(min(-1.2, means.min() - 4 * sigma),
+                          max(1.2, means.max() + 4 * sigma), 1200)
+    fig, axes = plt.subplots(2, 3, figsize=(15, 8), constrained_layout=True)
+    fig.suptitle(
+        rf"Policy a stati fissati: $\pi_{{w^{{(m)}}}}(a\mid s)$, "
+        rf"$v^{{\mathrm{{target}}}}={target}$, $\sigma={sigma}$"
+    )
+    for j, (position, velocity) in enumerate(states):
+        ax = axes[0, j]
+        for m, color, style in zip(checkpoints, colors, styles):
+            mu = means[m, j]
+            density = np.exp(-0.5 * ((actions - mu) / sigma)**2) / (
+                np.sqrt(2 * np.pi) * sigma
+            )
+            ax.plot(actions, density, color=color, linestyle=style,
+                    label=rf"$m={m}$, $\mu={mu:.3f}$")
+        ax.axvline(-1, color="gray", linestyle=":", label=r"Limiti $a=\pm1$")
+        ax.axvline(1, color="gray", linestyle=":")
+        ax.set(title=rf"Stato fissato: $p={position:g}$, $v={velocity:g}$",
+               xlabel=r"Azione campionata $a$", ylabel=r"Densita $\pi_{w^{(m)}}(a\mid s)$")
+        ax.set_ylim(bottom=0)
+        ax.legend(fontsize=8)
+        ax = axes[1, j]
+        ax.plot(np.arange(last_update + 1), means[:, j], color="tab:purple")
+        ax.axhline(means[0, j], color="tab:blue", linestyle="--", label="Media iniziale")
+        ax.set(xlabel=r"Update completati $m$", ylabel=r"$\mu_{w^{(m)}}(s)$",
+               title="Spostamento della media nello stesso stato")
+        ax.ticklabel_format(axis="y", style="plain", useOffset=False)
+        ax.legend(fontsize=8)
+        print(f"Fixed state ({position}, {velocity}): "
+              f"initial mean={means[0, j]:.6f}, final mean={means[-1, j]:.6f}")
+    for ax in axes.flat:
+        ax.grid(alpha=0.2)
+    fig.supxlabel(
+        "Densita gaussiane prima del clipping; stati scelti come riferimento. "
+        "Pannelli inferiori: scale verticali locali.", fontsize=10,
+    )
+    path = figure_path('policy_gradient', "reinforce_policy_evolution.png")
+    fig.savefig(path, dpi=160)
+    plt.close(fig)
+    print(f"Saved: {path}")
 
 
 def main():
@@ -105,10 +156,10 @@ def main():
     for ax in axes.flat:
         ax.grid(alpha=0.2)
 
-    path = Path(__file__).with_name("reinforce_training.png")
+    path = figure_path('policy_gradient', "reinforce_training.png")
     fig.savefig(path, dpi=160)
     plt.close(fig)
-    np.savez(path.with_suffix(".npz"), weights=weight_history,
+    np.savez(data_path(path), weights=weight_history,
              gradients=gradient_history, batch_returns=batch_returns,
              evaluation_updates=evaluation_updates, evaluation_returns=evaluations,
              learning_rate=learning_rate, sigma=sigma, target_velocity=target,
@@ -117,6 +168,7 @@ def main():
     print(f"Initial mean: {evaluation_means[0]:.6f}; final mean: {evaluation_means[-1]:.6f}")
     print(f"Final weights: {weights}")
     print("Shading is rollout standard deviation, not uncertainty of the mean.")
+    plot_policy_evolution(weight_history, sigma, target)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
-from reinforce_continuous_policy import collect_rollout
-from reinforce_batch_gradient import rollout_gradient
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
+from experiments.policy_gradient.reinforce_continuous_policy import collect_rollout
+from experiments.policy_gradient.reinforce_batch_gradient import rollout_gradient
 
 
 def evaluate_policy(weights, sigma, target_velocity, num_steps, num_rollouts):

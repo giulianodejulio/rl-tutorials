@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from continuous_control_rollout import PointMass1D, linear_policy
+from experiments.continuous_control.continuous_control_rollout import PointMass1D, linear_policy
 
 
 def evaluate_policy(weights, target_velocity, num_steps):

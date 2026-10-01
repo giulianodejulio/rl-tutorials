@@ -1,14 +1,13 @@
-from pathlib import Path
-
+from output_paths import figure_path
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
-from reinforce_continuous_policy import collect_rollout
-from reinforce_batch_gradient import returns_to_go, rollout_gradient
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
+from experiments.policy_gradient.reinforce_continuous_policy import collect_rollout
+from experiments.policy_gradient.reinforce_batch_gradient import returns_to_go, rollout_gradient
 
 
 def main():
@@ -87,13 +86,13 @@ def main():
         ax.plot(counts, running_gradient[:, j], color=color, label=labels[j],
                 linestyle="--" if j == 3 else "-")
     ax.axhline(0, color="gray", linestyle=":")
-    ax.set(title="Media progressiva del gradiente", xlabel="Numero di rollout inclusi",
+    ax.set(title="Media campionaria del gradiente", xlabel="Numero di rollout inclusi",
            ylabel="Componente del gradiente medio")
     ax.legend(fontsize=8)
     for ax in axes.flat:
         ax.grid(alpha=0.2)
 
-    path = Path(__file__).with_name("reinforce_batch_gradient.png")
+    path = figure_path('policy_gradient', "reinforce_batch_gradient.png")
     fig.savefig(path, dpi=160)
     plt.close(fig)
     print(f"Saved: {path}")
