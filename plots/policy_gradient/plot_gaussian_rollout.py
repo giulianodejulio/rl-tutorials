@@ -1,13 +1,12 @@
-from pathlib import Path
-
+from output_paths import figure_path
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
-from reinforce_continuous_policy import collect_rollout
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
+from experiments.policy_gradient.reinforce_continuous_policy import collect_rollout
 
 
 def main():
@@ -76,7 +75,7 @@ def main():
     for ax in axes.flat:
         ax.grid(alpha=0.2)
 
-    path = Path(__file__).with_name("gaussian_rollout.png")
+    path = figure_path('policy_gradient', "gaussian_rollout.png")
     fig.savefig(path, dpi=160)
     plt.close(fig)
     print(f"Saved: {path}")

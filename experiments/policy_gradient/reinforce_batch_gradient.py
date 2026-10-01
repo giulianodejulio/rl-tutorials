@@ -1,7 +1,7 @@
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
-from reinforce_continuous_policy import collect_rollout
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
+from experiments.policy_gradient.reinforce_continuous_policy import collect_rollout
 
 
 def returns_to_go(trajectory):

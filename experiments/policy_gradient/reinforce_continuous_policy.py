@@ -1,6 +1,6 @@
 import numpy as np
 
-from continuous_control_rollout import PointMass1D
+from experiments.continuous_control.continuous_control_rollout import PointMass1D
 
 
 def gaussian_policy(observation, target_velocity, weights, sigma, rng):

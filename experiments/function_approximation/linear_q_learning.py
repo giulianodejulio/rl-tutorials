@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from linear_value_prediction import GridworldEnvironment
+from experiments.function_approximation.linear_value_prediction import GridworldEnvironment
 
 
 def state_action_features(state, action, actions):
