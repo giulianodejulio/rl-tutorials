@@ -44,11 +44,11 @@ def main():
                             color=color, label=name)
         axes[1, 0].bar(positions + offset, stds[method] / np.sqrt(batch_size),
                        width=0.24, color=color, label=name)
-    axes[0, 0].set(title="Dispersione dei gradienti dei singoli rollout",
+    axes[0, 0].set(title=r"$s_{q,j}$: Dispersione dei gradienti dei singoli rollout",
                    ylabel="Deviazione standard")
-    axes[0, 1].set(title="Media dei gradienti ± 1 errore standard",
+    axes[0, 1].set(title=r"$\overline{d}_{q,j}\pm s_{q,j}/\sqrt{1000}$: Media dei gradienti ± 1 errore standard",
                    ylabel="Componente del gradiente medio")
-    axes[1, 0].set(title=f"Dispersione stimata della media di un batch (N={batch_size})",
+    axes[1, 0].set(title=r"$s_{q,j}/\sqrt{100}$: Dispersione stimata della media di un batch (N=100)",
                    ylabel="Deviazione standard stimata: s / √N")
     for ax in (axes[0, 0], axes[0, 1], axes[1, 0]):
         ax.set_xticks(positions)
@@ -63,7 +63,7 @@ def main():
                     xytext=(0, 4), textcoords="offset points", ha="center")
     ax.set_xticks(np.arange(3))
     ax.set_xticklabels(["Senza\nbaseline", "Baseline\ntemporale", "Baseline\ncritic"])
-    ax.set(title="Dispersione complessiva nelle coordinate dei pesi",
+    ax.set(title=r"$\sum_{j=0}^3 s_{q,j}^2$: Dispersione complessiva nelle coordinate dei pesi",
            ylabel="Somma delle varianze delle quattro componenti")
     ax.margins(y=0.15)
     for ax in axes.flat:
