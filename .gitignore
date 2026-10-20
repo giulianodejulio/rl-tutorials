@@ -1,2 +1,8 @@
 __pycache__/
 *.py[cod]
+
+# Local runtime, interrupted preflight and regenerable untrained fixtures
+paper/checks/interface/
+results/solo12/data/ppo_curriculum_incomplete/
+*.tmp
+.tmp-*/

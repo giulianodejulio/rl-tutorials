@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/Gepetto/soloRL",
+  "commit": "66554dccb44f4130cc3ddee490b4884b0215a5b5",
+  "sha256": {
+    "Environment.hpp": "9e9162fc493a8d5be8fa6b494f785fb93d15fa2323d0cf26b89e12916902599b",
+    "NoiseSampler.h": "c6b53d1ce06ab32e9cff5ae535fc2746cec35a248af6bcff20fbe085cfc583e2",
+    "README.md": "67123799aa2e529844066d7f247ad4e435cf3bf9962d64a3037ae641cfb17eca",
+    "cfg_terrain.yaml": "df0cb5068c71c9a058aa4b55e08dc3e97871dcd2fa78098855d14178dfc32959",
+    "eigenmvn.h": "3d4ed5663eaf6a62e411647f2a7c4e77d877a6a4b4cff144da0d8c668df8dec7",
+    "cfg.yaml": "90534d04b163e95ebc430caadfa784f1120f5110dcff490a7211fcd7a07f48ca",
+    "heightField.hpp": "5a2db7004a447576d05cb04a0084880bc3dc51b55bd5c9daa265427947ac6a36"
+  }
+}
