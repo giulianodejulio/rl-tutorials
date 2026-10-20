@@ -77,8 +77,7 @@ Change `desktop_bench4` to `desktop_bench6` and `--num-envs 4` to `--num-envs 6`
 for the second benchmark. Both keep the same 30000-transition PPO batch. A
 300000-step run completes ten PPO updates and saves its final checkpoint.
 
-For full training choose a **new run name** (the committed `article` folder is
-historical and contains an interrupted laptop run, not a trained checkpoint):
+For full training choose a **new run name**:
 
 ```bash
 docker exec -it \
@@ -127,9 +126,14 @@ for the experiment protocols. Container stop/start preserves mounted results.
 
 ## What is versioned
 
-The repository includes new tutorial/Solo12/paper code and historical datasets,
-models, plots and GIFs. The interrupted laptop paper run is retained as evidence:
-its CSV reaches 1.08e6 steps, while its only saved checkpoint is at zero steps.
-Cache files, shell history, Docker runtime files, regenerable validation fixtures
-and the failed preflight's incomplete logs are excluded. No Docker image binary
-is committed; build it with the commands above.
+The current checkout contains tutorial/Solo12/paper code, configurations and the
+shared model setup. Generated datasets, checkpoints, plots, GIFs and logs under
+`results/` and `paper/results/` stay local and are ignored by Git. Regenerate them
+with the experiment scripts or transfer selected runs separately between PCs.
+Previously published outputs remain in Git history.
+
+The interrupted laptop paper run reached 1.08e6 transitions in its local CSV,
+while its only saved checkpoint was at zero steps; it provides no trained policy
+to resume on the desktop. Cache files, shell history, Docker runtime files and
+regenerable validation fixtures are excluded. No Docker image binary is
+committed; build it with the commands above.

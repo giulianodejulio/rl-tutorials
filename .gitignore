@@ -6,3 +6,7 @@ paper/checks/interface/
 results/solo12/data/ppo_curriculum_incomplete/
 *.tmp
 .tmp-*/
+
+# Generated experiment outputs stay local; regenerate or transfer separately.
+results/
+paper/results/

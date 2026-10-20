@@ -86,7 +86,7 @@ Rebuild all existing plots without simulation:
 
 ```bash
 docker exec -w /home/gdj/workspaces/solo12_rl_ws/src/rl-tutorials \
-  docker_solo12_rl_ws python3 -m paper.plot --run article
+  docker_solo12_rl_ws python3 -m paper.plot --run article_desktop
 ```
 
 To assess locomotion, look at speed error + slip + contact patterns + fall rate
