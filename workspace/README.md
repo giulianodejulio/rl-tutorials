@@ -130,7 +130,7 @@ The current checkout contains tutorial/Solo12/paper code, configurations and the
 shared model setup. Generated datasets, checkpoints, plots, GIFs and logs under
 `results/` and `paper/results/` stay local and are ignored by Git. Regenerate them
 with the experiment scripts or transfer selected runs separately between PCs.
-Previously published outputs remain in Git history.
+Generated outputs have also been removed from the published Git history.
 
 The interrupted laptop paper run reached 1.08e6 transitions in its local CSV,
 while its only saved checkpoint was at zero steps; it provides no trained policy
