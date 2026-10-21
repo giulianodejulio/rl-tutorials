@@ -1,8 +1,0 @@
-{
-  "checks": "passed",
-  "training_executed": false,
-  "optimization_steps": 0,
-  "observation_size": 132,
-  "physics_dt": 0.001,
-  "control_dt": 0.01
-}

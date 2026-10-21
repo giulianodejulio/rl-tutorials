@@ -73,9 +73,16 @@ I relativi risultati restano in `results/solo12/`.
 
 I corrispondenti script `plot_*` in `plots/` visualizzano ciascun passaggio.
 
-## Ricreare il workspace su un altro PC
+## Progetto Solo12 autonomo e setup Docker
 
-Dockerfile, bootstrap del modello Solo12 e script di build/avvio portabili sono
-ora versionati in [workspace/README.md](workspace/README.md). Non servono gli
-script personali del laptop. Il metodo del paper e i suoi risultati restano
-separati in [paper/README.md](paper/README.md).
+Il port del paper, le policy ufficiali, il viewer con key teleop e il setup
+Docker sono stati trasferiti in
+[solo12-locomotion](https://github.com/giulianodejulio/solo12-locomotion).
+Qui restano gli esercizi didattici e gli esperimenti preliminari in `solo12/`.
+
+Il workspace condiviso contiene entrambe le repository sotto `src/` e i modelli
+esterni sotto `third_party/`. Per ricostruirlo usare `workspace/recreate.sh`
+della nuova repository: include Dockerfile, build, revisioni esterne fissate e
+launcher del viewer. Gli esperimenti di questa repo si eseguono ancora dalla
+radice `src/rl-tutorials`, mentre training del paper e demo si eseguono da
+`src/solo12-locomotion`.
